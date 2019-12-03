@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Intro</title>
+</head>
+<body>
+    <div id="shopping-list">
+        <div id="header">
+            <h1>{{ titleApp.toUpperCase() }}</h1>
+            <input type="text" v-model="titleApp" v-if="state === 'edit'">
+            <button v-if="state === 'default'" @click="changeState('edit')">Edit</button>
+            <button v-else @click="changeState('default')">Default</button>
+        </div>
+        <div v-if="state === 'edit'" id="add-item-form">
+            <input type="text" v-model="newItem" placeholder="Add another object..." @keyup.enter="addItem">
+            <button @click="addItem">Add item</button>
+            <p v-if="items.length > 3">You have: {{ items.length }}</p>
+        </div>
+        <ul>
+            <li v-for="item in items">{{ item }}</li>
+        </ul>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        let shoppingList = new Vue({
+            el: '#shopping-list',
+            data: {
+                state: 'default',
+                titleApp: 'Shopping List App',
+                newItem: '',
+                items: [
+                    'Object A',
+                    'Object B',
+                    'Object C'
+                ]
+            },
+            methods: {
+                addItem: function () { 
+                    this.items.push(this.newItem);
+                    this.newItem = '';
+                },
+                changeState: function (newState) {
+                    this.state = newState;
+
+                    this.newItem = '';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
