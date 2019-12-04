@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Intro</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div id="shopping-list">
@@ -21,7 +22,7 @@
         </div>
         <a :href="newItem" target="_blank">Dynamic Link</a>
         <ul>
-            <li v-for="item in items">{{ item }}</li>
+            <li v-for="item in items" :class="{strikeout: item.purchased}">{{ item.label }}</li>
         </ul>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -33,14 +34,26 @@
                 titleApp: 'Shopping List App',
                 newItem: '',
                 items: [
-                    'Object A',
-                    'Object B',
-                    'Object C'
+                    {
+                        label: 'Object A',
+                        purchased: false
+                    },
+                    {
+                        label: 'Object B',
+                        purchased: true
+                    },                    
+                    {
+                        label: 'Object C',
+                        purchased: false
+                    }
                 ]
             },
             methods: {
                 addItem: function () { 
-                    this.items.push(this.newItem);
+                    this.items.push({
+                        label: this.newItem,
+                        purchased: false
+                    });
                     this.newItem = '';
                 },
                 changeState: function (newState) {
