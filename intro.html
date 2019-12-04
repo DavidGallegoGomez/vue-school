@@ -17,12 +17,19 @@
         </div>
         <div v-if="state === 'edit'" id="add-item-form">
             <input type="text" v-model="newItem" placeholder="Add another object..." @keyup.enter="addItem">
+            <p>{{ charCount }}/200</p>
             <button @click="addItem" :disabled="newItem.length <= 3">Add item</button>
             <p v-if="items.length > 3">You have: {{ items.length }}</p>
         </div>
         <a :href="newItem" target="_blank">Dynamic Link</a>
         <ul>
-            <li v-for="item in items" :class="{strikeout: item.purchased}">{{ item.label }}</li>
+            <li 
+            v-for="item in reversedItems" 
+            :class="{ strikeout: item.purchased }"
+            @click="tooglePurchased(item)"
+            >
+                {{ item.label }}
+            </li>
         </ul>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -36,17 +43,24 @@
                 items: [
                     {
                         label: 'Object A',
-                        purchased: false
+                        purchased: false,
+                        highPriority: false
                     },
                     {
                         label: 'Object B',
-                        purchased: true
+                        purchased: true,
+                        highPriority: false
                     },                    
                     {
                         label: 'Object C',
-                        purchased: false
+                        purchased: false,
+                        highPriority: true
                     }
                 ]
+            },
+            computed: {
+                charCount() { return this.newItem.length },
+                reversedItems() { return this.items.slice(0).reverse() }
             },
             methods: {
                 addItem: function () { 
@@ -60,6 +74,9 @@
                     this.state = newState;
 
                     this.newItem = '';
+                },
+                tooglePurchased: function (item) {
+                    item.purchased = !item.purchased;
                 }
             }
         });
